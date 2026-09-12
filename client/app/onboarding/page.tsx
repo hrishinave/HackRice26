@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function OnboardingPage() {
   return (
-    <main className="flex min-h-svh items-center justify-center px-4 py-6 sm:px-6 lg:px-8">
+    <main className="flex min-h-svh items-start justify-center px-4 py-3 sm:items-center sm:px-6 sm:py-4 lg:px-8">
       <OnboardingSurvey />
     </main>
   );

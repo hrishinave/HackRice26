@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import type { SurveyOption } from "./survey-steps";
 
 type SingleChoiceFieldProps = {
+  labelledBy: string;
   name: string;
   options: SurveyOption[];
   value: string;
@@ -16,6 +17,7 @@ type SingleChoiceFieldProps = {
 };
 
 export function SingleChoiceField({
+  labelledBy,
   name,
   options,
   value,
@@ -23,8 +25,8 @@ export function SingleChoiceField({
 }: SingleChoiceFieldProps) {
   return (
     <RadioGroup
-      aria-labelledby="survey-question-title"
-      className="grid gap-3 sm:grid-cols-2"
+      aria-labelledby={labelledBy}
+      className="grid gap-1 sm:grid-cols-2 sm:gap-x-4"
       name={name}
       onValueChange={onChange}
       value={value}
@@ -36,8 +38,8 @@ export function SingleChoiceField({
         return (
           <Label
             className={cn(
-              "min-h-16 cursor-pointer border bg-card px-4 py-3 text-base leading-snug font-medium transition-colors hover:border-primary/60 hover:bg-secondary/60",
-              isSelected && "border-primary bg-secondary text-primary",
+              "min-h-12 cursor-pointer px-3 py-2 text-base leading-snug font-medium transition-colors hover:bg-secondary/60 sm:min-h-10 sm:py-1.5",
+              isSelected && "bg-secondary text-primary",
             )}
             htmlFor={id}
             key={option.value}
@@ -52,6 +54,7 @@ export function SingleChoiceField({
 }
 
 type MultipleChoiceFieldProps = {
+  labelledBy: string;
   name: string;
   options: SurveyOption[];
   values: string[];
@@ -59,6 +62,7 @@ type MultipleChoiceFieldProps = {
 };
 
 export function MultipleChoiceField({
+  labelledBy,
   name,
   options,
   values,
@@ -74,8 +78,8 @@ export function MultipleChoiceField({
 
   return (
     <div
-      aria-labelledby="survey-question-title"
-      className="grid gap-3 sm:grid-cols-2"
+      aria-labelledby={labelledBy}
+      className="grid gap-1 sm:grid-cols-2 sm:gap-x-4"
       role="group"
     >
       {options.map((option) => {
@@ -85,8 +89,8 @@ export function MultipleChoiceField({
         return (
           <Label
             className={cn(
-              "min-h-16 cursor-pointer border bg-card px-4 py-3 text-base leading-snug font-medium transition-colors hover:border-primary/60 hover:bg-secondary/60",
-              isSelected && "border-primary bg-secondary text-primary",
+              "min-h-12 cursor-pointer px-3 py-2 text-base leading-snug font-medium transition-colors hover:bg-secondary/60 sm:min-h-10 sm:py-1.5",
+              isSelected && "bg-secondary text-primary",
             )}
             htmlFor={id}
             key={option.value}
@@ -117,15 +121,15 @@ export function ConcentrationField({
   onChange,
 }: ConcentrationFieldProps) {
   return (
-    <div className="border bg-card px-5 py-8 sm:px-8 sm:py-10">
-      <div className="mb-8 flex items-end justify-between gap-4">
+    <div>
+      <div className="mb-4 flex items-end justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             Current rating
           </p>
           <output
             aria-live="polite"
-            className="font-mono text-5xl font-semibold tracking-tighter text-primary"
+            className="font-mono text-4xl font-semibold tracking-tighter text-primary"
           >
             {value}
           </output>
@@ -155,7 +159,7 @@ export function ConcentrationField({
         value={[value]}
       />
 
-      <div className="mt-4 flex justify-between gap-4 font-mono text-sm text-muted-foreground">
+      <div className="mt-3 flex justify-between gap-4 font-mono text-sm text-muted-foreground">
         <span>1 · Easily distracted</span>
         <span className="text-right">10 · Deeply focused</span>
       </div>
