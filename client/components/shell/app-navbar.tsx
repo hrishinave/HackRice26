@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AudioWaveform, Bot, House, Settings } from "lucide-react";
+import { Activity, AudioWaveform, Bot, House, Settings } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home", icon: House },
+  { href: "/activity", label: "Activity", icon: Activity },
   { href: "/chatbot", label: "Chatbot", icon: Bot },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
@@ -27,7 +28,7 @@ export function AppNavbar() {
           <span className="grid size-9 place-items-center bg-primary text-primary-foreground">
             <AudioWaveform aria-hidden="true" className="size-5" />
           </span>
-          <span className="font-heading text-xl font-semibold tracking-tight">
+          <span className="hidden font-heading text-xl font-semibold tracking-tight sm:inline">
             FocusCue
           </span>
         </Link>
@@ -53,7 +54,7 @@ export function AppNavbar() {
                 href={item.href}
                 key={item.href}
               >
-                <Icon aria-hidden="true" className="mr-1.5"/>
+                <Icon aria-hidden="true" className="sm:mr-1.5" />
                 <span className="hidden sm:inline">{item.label}</span>
                 <span className="sr-only sm:hidden">{item.label}</span>
               </Link>

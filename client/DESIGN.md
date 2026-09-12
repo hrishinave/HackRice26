@@ -94,7 +94,7 @@ Working surfaces may use an opaque `bg-background`, `bg-card`, or `bg-popover` w
 ## App shell
 
 - All product pages use the shared FocusCue top navigation; onboarding remains outside the shell.
-- The waveform mark and FocusCue name stay on the left. Home, Chatbot, and Settings stay on the right.
+- The waveform mark and FocusCue name stay on the left. Home, Activity, Chatbot, and Settings stay on the right.
 - Use one consistent maximum content width so page headings and working surfaces align across routes.
 - On narrow screens, navigation keeps the icons and hides repeated text labels.
 
