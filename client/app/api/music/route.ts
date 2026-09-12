@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 const ELEVENLABS_MUSIC_URL = "https://api.elevenlabs.io/v1/music";
 
+function buildMusicPrompt(
+  goals: string,
+  musicStyle: string,
+  neurotype: string
+): string {
+  return `Compose a piece of background music designed to help a ${neurotype} listener stay focused while working on: ${goals}. The music should be in a ${musicStyle} style, with a steady, non-distracting rhythm, minimal abrupt changes, and no lyrics, so it supports sustained concentration rather than pulling attention away from the task.`;
+}
+
 export async function POST(request: NextRequest) {
   const apiKey = process.env.ELEVENLABS_API_KEY;
   if (!apiKey) {
@@ -12,9 +20,9 @@ export async function POST(request: NextRequest) {
   }
 
   let body: {
-    prompt?: string;
-    musicLengthMs?: number;
-    forceInstrumental?: boolean;
+    goals?: string;
+    musicStyle?: string;
+    neurotype?: string;
   };
   try {
     body = await request.json();
@@ -22,13 +30,27 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const { prompt, musicLengthMs, forceInstrumental } = body;
-  if (!prompt || typeof prompt !== "string") {
+  const { goals, musicStyle, neurotype } = body;
+  if (!goals || typeof goals !== "string") {
     return NextResponse.json(
-      { error: "'prompt' is required and must be a string" },
+      { error: "'goals' is required and must be a string" },
       { status: 400 }
     );
   }
+  if (!musicStyle || typeof musicStyle !== "string") {
+    return NextResponse.json(
+      { error: "'musicStyle' is required and must be a string" },
+      { status: 400 }
+    );
+  }
+  if (!neurotype || typeof neurotype !== "string") {
+    return NextResponse.json(
+      { error: "'neurotype' is required and must be a string" },
+      { status: 400 }
+    );
+  }
+
+  const prompt = buildMusicPrompt(goals, musicStyle, neurotype);
 
   const elevenLabsResponse = await fetch(ELEVENLABS_MUSIC_URL, {
     method: "POST",
@@ -36,13 +58,7 @@ export async function POST(request: NextRequest) {
       "xi-api-key": apiKey,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      prompt,
-      ...(musicLengthMs ? { music_length_ms: musicLengthMs } : {}),
-      ...(forceInstrumental !== undefined
-        ? { force_instrumental: forceInstrumental }
-        : {}),
-    }),
+    body: JSON.stringify({ prompt }),
   });
 
   if (!elevenLabsResponse.ok || !elevenLabsResponse.body) {
