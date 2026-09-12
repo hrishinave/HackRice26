@@ -1,14 +1,35 @@
 "use client";
 
 import Link from "next/link";
-import { Activity, AudioLines, Music2, Sparkles } from "lucide-react";
+import { Activity, AudioLines, Music2 } from "lucide-react";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useBackgroundService } from "@/hooks/use-background-service";
+import { useFocusCueActivity } from "@/hooks/use-focuscue-activity";
 import { cn } from "@/lib/utils";
+
+function formatDuration(milliseconds: number) {
+  const minutes = Math.floor(milliseconds / 60000);
+
+  if (minutes < 60) {
+    return `${minutes} min`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+  return remainingMinutes ? `${hours}h ${remainingMinutes}m` : `${hours}h`;
+}
 
 export function DashboardHome() {
   const serviceEnabled = useBackgroundService();
+  const activity = useFocusCueActivity();
+  const snapshot = activity.snapshot;
+  const currentResponse =
+    snapshot?.currentCategory === "distracting"
+      ? "Increase detail"
+      : snapshot?.currentCategory === "productive"
+        ? "Baseline"
+        : "Observing";
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -71,12 +92,18 @@ export function DashboardHome() {
                 </dd>
               </div>
               <div className="flex items-center justify-between gap-4 py-4">
-                <dt className="text-muted-foreground">Focus profile</dt>
-                <dd className="font-semibold">Ready</dd>
+                <dt className="text-muted-foreground">Activity monitor</dt>
+                <dd className="font-semibold">
+                  {activity.connectionStatus === "connected"
+                    ? "Connected"
+                    : activity.connectionStatus === "checking"
+                      ? "Checking…"
+                      : "Not detected"}
+                </dd>
               </div>
               <div className="flex items-center justify-between gap-4 py-4">
                 <dt className="text-muted-foreground">Current response</dt>
-                <dd className="font-semibold">Baseline</dd>
+                <dd className="font-semibold">{currentResponse}</dd>
               </div>
             </dl>
 
@@ -93,9 +120,15 @@ export function DashboardHome() {
 
         <div className="grid border-t border-primary/20 sm:grid-cols-3">
           {[
-            ["Focus time today", "0 min"],
-            ["Attention nudges", "0"],
-            ["Completed sessions", "0"],
+            [
+              "Focus time today",
+              snapshot ? formatDuration(snapshot.totals.productiveMs) : "—",
+            ],
+            [
+              "Distracted today",
+              snapshot ? formatDuration(snapshot.totals.distractingMs) : "—",
+            ],
+            ["Focus score", snapshot ? `${snapshot.focusScore}%` : "—"],
           ].map(([label, value], index) => (
             <div
               className={cn(

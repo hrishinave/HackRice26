@@ -23,6 +23,7 @@ import {
   setBackgroundServiceEnabled,
   useBackgroundService,
 } from "@/hooks/use-background-service";
+import { useFocusCueActivity } from "@/hooks/use-focuscue-activity";
 import { SURVEY_STORAGE_KEY, type SurveyAnswers } from "@/lib/survey";
 
 import { SURVEY_STEPS } from "../onboarding/survey-steps";
@@ -79,6 +80,7 @@ function getOptionLabel(stepId: string, value: string) {
 export function SettingsPanel() {
   const router = useRouter();
   const serviceEnabled = useBackgroundService();
+  const activity = useFocusCueActivity();
   const surveySnapshot = useSyncExternalStore(
     subscribeToSurvey,
     getSurveySnapshot,
@@ -155,8 +157,11 @@ export function SettingsPanel() {
             </div>
           </div>
           <p className="border-t bg-muted/40 px-5 py-4 text-sm leading-6 text-muted-foreground sm:px-6">
-            This currently saves your preference. Cross-tab activity monitoring
-            will connect through the companion browser service.
+            {activity.connectionStatus === "connected"
+              ? "Extension connected. FocusCue is receiving private, domain-level activity totals from this browser."
+              : activity.connectionStatus === "checking"
+                ? "Checking for the FocusCue Chrome extension…"
+                : "Extension not detected. Load the companion Chrome extension to begin activity monitoring."}
           </p>
         </section>
       </TabsContent>

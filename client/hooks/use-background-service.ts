@@ -6,6 +6,7 @@ import {
   BACKGROUND_SERVICE_EVENT,
   BACKGROUND_SERVICE_STORAGE_KEY,
 } from "@/lib/settings";
+import { setExtensionTrackingEnabled } from "@/lib/extension-bridge";
 
 function subscribe(onStoreChange: () => void) {
   window.addEventListener("storage", onStoreChange);
@@ -31,6 +32,7 @@ export function setBackgroundServiceEnabled(enabled: boolean) {
     String(enabled),
   );
   window.dispatchEvent(new Event(BACKGROUND_SERVICE_EVENT));
+  setExtensionTrackingEnabled(enabled);
 }
 
 export function useBackgroundService() {
