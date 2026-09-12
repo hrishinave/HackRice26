@@ -13,8 +13,8 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
-  title: "HackRice26",
-  description: "HackRice26 project",
+  title: "FocusCue",
+  description: "Adaptive music that helps students return to focus.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

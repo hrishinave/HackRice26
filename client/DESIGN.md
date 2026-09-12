@@ -91,6 +91,20 @@ Working surfaces may use an opaque `bg-background`, `bg-card`, or `bg-popover` w
 - Show the active destination with violet text, fill, or a strong left/bottom rule.
 - Avoid oversized logos, excessive empty chrome, and redundant navigation labels.
 
+## App shell
+
+- All product pages use the shared FocusCue top navigation; onboarding remains outside the shell.
+- The waveform mark and FocusCue name stay on the left. Home, Chatbot, and Settings stay on the right.
+- Use one consistent maximum content width so page headings and working surfaces align across routes.
+- On narrow screens, navigation keeps the icons and hides repeated text labels.
+
+## Settings
+
+- Organize settings by task using a small tab list, not a wall of unrelated controls.
+- A setting row pairs a plain-language label and description with its control on the right.
+- Profile answers use a definition list with dividers rather than individual cards.
+- Destructive reset actions live at the bottom of their section and require confirmation.
+
 ## Motion and interaction
 
 - Transitions should be quick and functional: 120–180ms for color, border, and small position changes.
